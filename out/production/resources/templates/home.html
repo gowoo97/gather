@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <link rel="stylesheet" th:href="@{/header.css}">
+    <link rel="stylesheet" th:href="@{/footer.css}">
+    <title>Title</title>
+</head>
+<body>
+    <div class="wrap">
+        <div th:replace="~{header :: header}">
+        </div>
+        
+        <div class="main_slide">
+            <div>
+
+            </div>
+        </div>
+
+        <h4>최근 게시글</h4>
+
+        <footer th:replace="~{footer :: footer}">
+            	dsfds
+        </footer>
+    </div>
+</body>
+</html>
