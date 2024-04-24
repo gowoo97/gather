@@ -1,0 +1,34 @@
+.header{
+  display: flex;
+  
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+}
+
+
+.header .left{
+   display: flex;
+   height: 100%;
+   justify-content: center;
+   align-items: center;
+   margin: 0 10px;
+   
+}
+
+.header .left div{
+	 margin: 0 10px;
+}
+
+.header .right div{
+	margin: 0 10px;
+	margin-left:auto;
+}
+
+.header .right{
+	display: flex;
+	justify-content: center;
+   align-items: center;
+    margin: 0 10px;
+    margin-left: auto;
+}
