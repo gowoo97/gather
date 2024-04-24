@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/header.css}">
+    <link rel="stylesheet" th:href="@{/login.css}">
+    <link rel="stylesheet" th:href="@{/footer.css}">
+    <link rel="stylesheet" th:href="@{/common.css}">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="wrap">
+
+        <div th:replace="~{header :: header}">
+
+        </div>
+		<form method="post" action="/login">
+        <div class="box">
+			
+			<div>
+					로그인
+			</div>
+			<input placeholder="아이디" type="text" name="userId"/> 
+			<input placeholder="비밀번호" type="password" name="password" />
+			<input placeholder="로그인" type="submit" value="로그인"/>
+			
+			<div>
+				<span>아직 회원이 아니신가요?</span> <a href="/signup"> <span style="color:aqua">회원가입</span> </a>
+			</div>
+         	 
+        </div>
+         </form>
+        <div th:replace="~{footer :: footer}">
+
+        </div>
+
+    </div>
+
+
+</body>
+</html>
