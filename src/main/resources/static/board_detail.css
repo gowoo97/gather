@@ -1,0 +1,40 @@
+.wrap{
+	margin:auto;	
+	 width: 1280px;
+	height: 80px;
+}
+
+.paging{
+	display: flex;
+	justify-content: center;
+	
+}
+
+.paging span{
+	display: inline-block;
+	border: 1px solid black;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	line-height: 25px;
+	cursor: pointer;
+}
+
+.pageAndBtt{
+	display: flex;
+	justify-content: center;
+	position: relative;
+}
+
+#writeBtt{
+	position: absolute;
+	right: 0;
+	border: 1px solid black;
+	width: 100px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(59, 207, 254, 1);
+	border-radius: 10px;
+}

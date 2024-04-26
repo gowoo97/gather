@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/common.css}">
+    <title>Document</title>
+</head>
+<body>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		let message = `[[${message}]]`;
+		let url = `[[${url}]]`;
+		console.log(url);
+		alert(message);
+		location.href=url.substring(1,url.length-1);
+		/*]]>*/
+	</script>
+</body>
+</html>
