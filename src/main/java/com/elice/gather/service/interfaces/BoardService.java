@@ -1,14 +1,13 @@
-package com.elice.gather.repository.interfaces;
+package com.elice.gather.service.interfaces;
 
 import java.util.List;
 
 import com.elice.gather.DTO.BoardDTO;
-import com.elice.gather.entity.Board;
 
-public interface BoardRepository {
-
+public interface BoardService {
 	
-	BoardDTO save(BoardDTO board);
+	
+	BoardDTO save(String boardName,String userId);
 	
 	List<BoardDTO> getBoards(int cnt);
 	
@@ -17,5 +16,4 @@ public interface BoardRepository {
 	int modifyBoard(BoardDTO board);
 	
 	void deleteBoard(long id);
-	
 }
