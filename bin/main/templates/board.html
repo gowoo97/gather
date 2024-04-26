@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/header.css}">
     <link rel="stylesheet" th:href="@{/board.css}">
     <link rel="stylesheet" th:href="@{/footer.css}">
+    <link rel="stylesheet" th:href="@{/common.css}">
     <title>Document</title>
 </head>
 <body>
@@ -16,12 +17,26 @@
         </div>
    		
    		<main>
-				<div>
-					<input type="text" placeholder="검색어를 입력하세요"/>
-					<input type="submit" value="검색"/>
+				<div style="display: flex; justify-content: center;">
+					<form>
+					<input type="text" placeholder="검색어를 입력하세요" style="width: 559px; height: 60px;"/>
+					<input type="submit" value="검색" style="width: 82px; height: 60px;"/>
+					</form>
 				</div>   
-				<div>
-					
+				<div class="boards" style="height: 1000px;">
+					<div th:each="board : ${boards}" style="border: 1px solid black; border-radius: 10px; height: 100px; margin-top:13px;">
+						<a th:href="@{/board/view(id = ${board.id})}">
+						<div class="board">
+						<div th:text="${board.boardName}"> </div>
+						</div>
+						</a>
+					</div>
+				</div>
+				<div style="display: flex; justify-content: center;">
+					<form method="post" action="/board">
+					<input type="text" placeholder="게시판 이름" name="boardName" style="width: 663px; height: 60px;"/>
+					<input type="submit" value="생성" style="width: 143px; height: 60px;"/>
+					</form>
 				</div>
 		</main>
 		
@@ -30,7 +45,5 @@
         
 
     </div>
-
-
 </body>
 </html>

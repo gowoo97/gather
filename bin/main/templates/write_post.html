@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/header.css}">
+    <link rel="stylesheet" th:href="@{/footer.css}">
+    <link rel="stylesheet" th:href="@{/common.css}">
+    <link rel="stylesheet" th:href="@{/write_post.css}">
+    <title>Title</title>
+</head>
+<body>
+    	<div class="wrap">
+        <div th:replace="~{header :: header}">
+        </div>
+		<form method="post" enctype="multipart/form-data" action="/post">
+        <div class="main">
+			
+			<div style="margin-bottom: 30px;"><input type="text" name="title" style="width: 100%;" placeholder="제목을 입력하세요"/></div>
+			<div id="imageDiv" style="width: 100%; background-color: antiquewhite; height: 400px; margin-bottom: 70px;">
+				<img src="" id="preview"/>
+				<input type="file" accept="image/*" id="image" name="image" hidden/>
+			</div>
+			<textarea name="content"></textarea>
+			<div style="display: flex; justify-content: center;">
+				
+				
+					<label><input type="checkbox" name="week" value="0"/>월</label>
+					<label><input type="checkbox" name="week" value="1"/>화</label>
+					<label><input type="checkbox" name="week" value="2"/>수</label>
+					<label><input type="checkbox" name="week" value="3"/>목</label>
+					<label><input type="checkbox" name="week" value="4"/>금</label>
+					<label><input type="checkbox" name="week" value="5"/>토</label>
+					<label><input type="checkbox" name="week" value="6"/>일</label>
+			
+				
+			</div>
+			<div>
+				<div style="display: flex; justify-content: center;">
+					<label>모집인원<input type="number" name="participants"/> </label>
+					<input type="submit" value="제출"/>
+				</div>
+			</div>
+        </div>
+        </form>
+
+        <footer th:replace="~{footer :: footer}">
+            	
+        </footer>
+    </div>
+</body>
+<script th:inline="javascript">
+		/*<![CDATA[*/
+		var image = document.getElementById("image");
+		var preview = document.getElementById("preview");
+		var reader = new FileReader();
+		var imageDiv = document.getElementById("imageDiv");
+		function divClick(){
+			image.click();
+		}
+		
+		
+        
+		function changeImage(){
+			reader.onloadend=({target})=>{
+           preview.src=target.result;
+        }
+			reader.readAsDataURL(image.files[0]);
+		};
+			
+		imageDiv.addEventListener("click",divClick);
+
+		image.addEventListener("change",changeImage);
+		
+		/*]]>*/
+	</script>
+</html>
