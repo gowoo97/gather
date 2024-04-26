@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/header.css}">
+    <link rel="stylesheet" th:href="@{/footer.css}">
+     <link rel="stylesheet" th:href="@{/board_detail.css}">
+    <link rel="stylesheet" th:href="@{/common.css}">
+    <title>Title</title>
+</head>
+<body>
+    	<div class="wrap">
+        <div th:replace="~{header :: header}">
+        </div>
+        
+        <div style="display: flex; justify-content: center;">
+					<form>
+					<input type="text" placeholder="검색어를 입력하세요" style="width: 559px; height: 60px;"/>
+					<input type="submit" value="검색" style="width: 82px; height: 60px;"/>
+					</form>
+		</div>   
+       	
+		
+        <h4 th:text="${board.boardName}"></h4>
+        <hr/>
+        
+        <div style="height: 1000px;">
+        </div>
+        
+    
+        
+        <div class="pageAndBtt">
+				<div class="paging">
+					<span><</span>
+					<span>1</span>
+					<span>2</span>
+					<span>3</span>
+					<span>4</span>
+					<span>5</span>
+					<span>></span>
+				</div>
+				<a th:href="@{/post/write(id=${board.id})}">
+				<div id="writeBtt">
+					글쓰기
+				</div>
+				</a>
+		</div>
+
+        <footer th:replace="~{footer :: footer}">
+            	dsfds
+        </footer>
+    </div>
+    
+</body>
+</html>
