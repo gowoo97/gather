@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/header.css}">
@@ -24,20 +24,34 @@
         <h4 th:text="${board.boardName}"></h4>
         <hr/>
         
-        <div style="height: 1000px;">
+        <div style="height: 1200px;">
+			
+			<div class="post" th:each="post : ${posts}">
+				<div class="image">
+					<img th:src="@{http://localhost:8080}+${post.imagePath}"/>
+				</div>
+				
+				<div class="post_content">
+					<div th:text="${post.title}"></div>
+					<div th:text="${post.content}">
+						
+					</div>
+				</div>
+			</div>
+			
         </div>
         
     
         
         <div class="pageAndBtt">
 				<div class="paging">
-					<span><</span>
-					<span>1</span>
-					<span>2</span>
-					<span>3</span>
-					<span>4</span>
-					<span>5</span>
-					<span>></span>
+					<span id="pageLeft"><</span>
+					<span class="pageBtt"></span>
+					<span class="pageBtt"></span>
+					<span class="pageBtt"></span>
+					<span class="pageBtt"></span>
+					<span class="pageBtt"></span>
+					<span id="pageRight">></span>
 				</div>
 				<a th:href="@{/post/write(id=${board.id})}">
 				<div id="writeBtt">
@@ -50,6 +64,36 @@
             	dsfds
         </footer>
     </div>
-    
+    <script th:inline="javascript">
+		/*<![CDATA[*/
+		const url = new URL(window.location.href);
+		const urlParams = url.searchParams;
+		const pageNo = urlParams.get("page")? urlParams.get("page"):0;
+		const pageBtts = document.getElementsByClassName("pageBtt");
+		const leftPage = parseInt(pageNo)-1<0? 0 :parseInt(pageNo)-1;
+		const rightPage = parseInt(pageNo)+1;
+		console.log(parseInt(pageNo)+" 페이지");
+		let start = (5*parseInt(pageNo/5))+1;
+		for(let i = 0 ; i<pageBtts.length; i++){
+			pageBtts[i].innerHTML = start+i;
+			pageBtts[i].addEventListener("click",()=>{
+				window.location.href="/board/view?id="+urlParams.get("id")+"&page="+(start+i-1);
+			})
+		}
+		
+		document.getElementById("pageRight").addEventListener("click",()=>{
+			window.location.href="/board/view?id="+urlParams.get("id")+"&page="+rightPage;
+		})
+		document.getElementById("pageLeft").addEventListener("click",()=>{
+			window.location.href="/board/view?id="+urlParams.get("id")+"&page="+leftPage;
+		})
+		
+		
+		
+		
+		
+		
+		/*]]>*/
+	</script>
 </body>
 </html>

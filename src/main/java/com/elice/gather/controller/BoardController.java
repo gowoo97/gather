@@ -3,6 +3,7 @@ package com.elice.gather.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.elice.gather.DTO.BoardDTO;
+import com.elice.gather.entity.Post;
 import com.elice.gather.service.interfaces.BoardService;
+import com.elice.gather.service.interfaces.PostService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +26,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private PostService postService;
 	
 	@GetMapping
 	public String boardPage(Model model) {
@@ -54,10 +60,14 @@ public class BoardController {
 	}
 	
 	@GetMapping("/view")
-	public String boardDetail(@RequestParam("id") Long id , Model model) {
+	public String boardDetail(@RequestParam("id") Long id , Model model,@RequestParam(name = "page",defaultValue = "0") Integer page) {
 		
+		Page<Post> posts = postService.findAll(page,10);
 		BoardDTO board= boardService.getBoardById(id);
 		model.addAttribute("board", board);
+		model.addAttribute("posts", posts.toList());
+		
+		
 		
 		return "board_detail";
 		

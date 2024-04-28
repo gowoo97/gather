@@ -18,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.elice.gather.DTO.PostDTO;
 import com.elice.gather.service.interfaces.PostService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/post")
 public class PostController {
@@ -33,17 +36,16 @@ public class PostController {
 	@PostMapping
 	@Transactional
 	public String createPost(@RequestParam Map<String, Object> paramMap,@RequestParam("image") MultipartFile image,
-			@RequestParam("week") List<String> week) throws IllegalStateException, IOException {
-		
-		PostDTO postDTO = createPostDTO(paramMap,image,week);
+			@RequestParam("week") List<String> week,HttpServletRequest request) throws IllegalStateException, IOException {
+		HttpSession session = request.getSession();
+		PostDTO postDTO = createPostDTO(paramMap,image,week,(String) session.getAttribute("userId"));
 		postService.savePost(postDTO);
-		
-		
-		return "board";
+		return "redirect:/board/view?id="+(String)paramMap.get("id");
 	}
 	
 	
-	private PostDTO createPostDTO(Map<String, Object> paramMap,MultipartFile image,List<String> week) throws IllegalStateException, IOException {
+	private PostDTO createPostDTO(Map<String, Object> paramMap,MultipartFile image
+			,List<String> week,String userId) throws IllegalStateException, IOException {
 		UUID uuid=UUID.randomUUID();
 		image.transferTo(Paths.get("src/main/resources/static/images/"+uuid.toString()+"_"+image.getOriginalFilename()));
 		//////////////////////////////////////////이미지 저장
@@ -53,15 +55,21 @@ public class PostController {
 		String content = (String)paramMap.get("content");
 		StringBuffer joinWeek = new StringBuffer("0000000");
 		int participants  = Integer.parseInt((String) paramMap.get("participants"));
+		long board_id = Long.parseLong((String)paramMap.get("id"));
+		String publisher = userId;
 		for(String val : week) {
 			joinWeek.setCharAt(Integer.parseInt(val),'1');
 		}
 		
-		return PostDTO.builder().title(title)
-				.imagePath("/image/"+fileName)
+		return PostDTO.builder()
+				.board_id(board_id)
+				.publisher(publisher)
+				.title(title)
 				.content(content)
 				.dayOfWeek(joinWeek.toString())
-				.participants(participants)
+				.maxParticipants(participants)
+				.participants(0)
+				.imagePath("/images/"+fileName)
 				.build();
 		
 	

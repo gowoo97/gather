@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/header.css}">
@@ -41,6 +41,7 @@
 				</div>
 			</div>
         </div>
+        	<input name="id" id="board_id" th:value="${param.id}" hidden/>
         </form>
 
         <footer th:replace="~{footer :: footer}">
@@ -54,6 +55,9 @@
 		var preview = document.getElementById("preview");
 		var reader = new FileReader();
 		var imageDiv = document.getElementById("imageDiv");
+		
+		
+		
 		function divClick(){
 			image.click();
 		}
@@ -70,6 +74,8 @@
 		imageDiv.addEventListener("click",divClick);
 
 		image.addEventListener("change",changeImage);
+		
+		
 		
 		/*]]>*/
 	</script>
