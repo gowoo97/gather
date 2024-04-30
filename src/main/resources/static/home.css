@@ -7,12 +7,12 @@
 
 
 .main_slide{
-    background-color: aqua;
     height: 500px;
+   transition:left 1s ease-in;
 }
 
 footer{
-	 height: 500px;
+	height: 500px;
 }
 
 
@@ -20,6 +20,7 @@ footer{
 	width: 100px;
 	height: 100px;
 	overflow:hidden;
+	margin: 0 auto;
 }
 
 .imageDiv img{
@@ -27,3 +28,29 @@ footer{
     height:100%;
     object-fit:cover;
 }
+
+.post_list{
+	display: flex;
+	flex-direction: row;
+}
+
+.post_list> div{
+	width: 200px;
+	margin: 10px;
+}
+
+
+.homeImageDiv{
+	position: relative;
+	width: 1278px;
+	height: 100%;
+	transition: 2s;
+}
+
+.homeImage{
+	width: 1278px;
+	
+	
+}
+
+
