@@ -46,6 +46,9 @@ public class PostServiceImpl implements PostService {
 		return postRepository.findAll(PageRequest.of(page, size));
 	}
 	
+	public Post findPostById(long postId) {
+		return postRepository.findById(postId).get();
+	}
 	
 
 }

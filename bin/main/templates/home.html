@@ -20,6 +20,13 @@
         </div>
 
         <h4>최근 게시글</h4>
+        <div>
+			<div th:each="post : ${posts}">
+				<div class="imageDiv">
+					<img th:src="@{http://localhost:8080}+${post.imagePath}" />
+				</div>
+			</div>
+		</div>
 
         <footer th:replace="~{footer :: footer}">
             	dsfds

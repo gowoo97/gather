@@ -26,7 +26,9 @@
         
         <div style="height: 1200px;">
 			
-			<div class="post" th:each="post : ${posts}">
+			<div th:each="post : ${posts}" >
+				<a th:href="@{/post/view(id=${post.id})}">
+				<div class="post">
 				<div class="image">
 					<img th:src="@{http://localhost:8080}+${post.imagePath}"/>
 				</div>
@@ -37,6 +39,8 @@
 						
 					</div>
 				</div>
+				</div>
+				</a>
 			</div>
 			
         </div>

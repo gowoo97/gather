@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.elice.gather.DTO.PostDTO;
+import com.elice.gather.entity.Comment;
+import com.elice.gather.entity.Post;
+import com.elice.gather.service.interfaces.CommentService;
 import com.elice.gather.service.interfaces.PostService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +32,9 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 	
+	@Autowired
+	private CommentService commentService;
+	
 	@GetMapping("/write")
 	public String writePostPage() {
 		return "write_post";
@@ -36,20 +43,29 @@ public class PostController {
 	@PostMapping
 	@Transactional
 	public String createPost(@RequestParam Map<String, Object> paramMap,@RequestParam("image") MultipartFile image,
-			@RequestParam("week") List<String> week,HttpServletRequest request) throws IllegalStateException, IOException {
+			@RequestParam("week") List<String> week,HttpServletRequest request) throws IllegalStateException, IOException, InterruptedException {
 		HttpSession session = request.getSession();
 		PostDTO postDTO = createPostDTO(paramMap,image,week,(String) session.getAttribute("userId"));
 		postService.savePost(postDTO);
 		return "redirect:/board/view?id="+(String)paramMap.get("id");
 	}
 	
+	@GetMapping("/view")
+	public String postView(Model model,@RequestParam("id") long postId) {
+		Post post = postService.findPostById(postId);
+		List<Comment> comments = commentService.findAll(0, 10);
+		model.addAttribute("post", post);
+		model.addAttribute("comments", comments);
+		
+		return "post_detail";
+	}
+	
 	
 	private PostDTO createPostDTO(Map<String, Object> paramMap,MultipartFile image
-			,List<String> week,String userId) throws IllegalStateException, IOException {
+			,List<String> week,String userId) throws IllegalStateException, IOException, InterruptedException {
 		UUID uuid=UUID.randomUUID();
 		image.transferTo(Paths.get("src/main/resources/static/images/"+uuid.toString()+"_"+image.getOriginalFilename()));
 		//////////////////////////////////////////이미지 저장
-		
 		String fileName =  uuid.toString()+"_"+image.getOriginalFilename();
 		String title = (String)paramMap.get("title");
 		String content = (String)paramMap.get("content");
@@ -71,12 +87,7 @@ public class PostController {
 				.participants(0)
 				.imagePath("/images/"+fileName)
 				.build();
-		
-	
-		
-		
-		
-	
+
 	}
 	
 }

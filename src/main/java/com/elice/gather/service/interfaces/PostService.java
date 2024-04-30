@@ -12,4 +12,6 @@ public interface PostService {
 	
 	Page<Post> findAll(int page,int size);
 	
+	
+	Post findPostById(long postId);
 }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/header.css}">
+    <link rel="stylesheet" th:href="@{/footer.css}">
+    <link rel="stylesheet" th:href="@{/common.css}">
+    <link rel="stylesheet" th:href="@{/post_detail.css}">
+    <title>Title</title>
+</head>
+<body>
+    	<div class="wrap">
+        <div th:replace="~{header :: header}">
+        </div>
+		<h1 th:text="${post.title}"></h1>
+		<div class="main">
+			
+			<div class="imageDiv">
+				<img class="image" th:src="@{http://localhost:8080}+${post.imagePath}" />
+			</div>
+			
+			<p th:text="${post.content}">	
+			</p>
+			
+			<div class="week" style="display: flex;">
+				<div class="weekNonSelected">월</div>
+				<div class="weekNonSelected">화</div>
+				<div class="weekNonSelected">수</div>
+				<div class="weekNonSelected">목</div>
+				<div class="weekNonSelected">금</div>
+				<div class="weekNonSelected">토</div>
+				<div class="weekNonSelected">일</div>
+			</div>
+			<div>
+				<span>모집인원</span>
+				<progress value="3" max="6"></progress>
+				
+			</div>
+			
+			
+			<button style="width: 100%;">
+				신청하기
+			</button>
+		
+		</div>
+		<h5>댓글</h5>
+		<hr/>
+		
+		<div th:each="comment : ${comments}" style="border: 1px solid black; border-radius: 10px;">
+			<div th:text="${comment.publisher.userId}">
+				
+			</div>
+			<div th:text="${comment.content}">
+				
+			</div>
+		</div>
+		
+		<div>
+			<form method="post" action="/comment/write.do">
+				<input th:value="${param.id}"  name="post_id" hidden />
+				<input type="text" name="content" style="width: 80%;" />
+				<input type="submit" value="댓글생성"  style="width: 20%;"/>
+			</form>
+		</div>
+		
+		
+
+        <footer th:replace="~{footer :: footer}">
+            	
+        </footer>
+    </div>
+    <script th:inline="javascript">
+		/*<![CDATA[*/
+		let weekend = document.getElementsByClassName('weekNonSelected');
+		let joinWeek = `[[${post.dayOfWeek}]]`;
+		joinWeek=joinWeek.substring(1,joinWeek.length-1);
+		console.log(joinWeek);
+		console.log(weekend.length);
+		for(let i =0 ; i<joinWeek.length;i++){
+			if(joinWeek[i]=="1"){
+				console.log(joinWeek[i]);
+				weekend[i].classList.add('weekSelected');
+			}	
+		}
+		
+		
+		
+		/*]]>*/
+	</script>
+</body>
+
+</html>
