@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elice.gather.DTO.RequestDTO;
+import com.elice.gather.entity.Request;
 import com.elice.gather.service.interfaces.RequestService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public class RequestController {
 	
 	@PostMapping("/api/request")
 	public ResponseEntity<?> createRequest(@RequestBody RequestDTO postId,HttpServletRequest req) {
-		requestService.saveRequest(postId.getPostId(),req);
+		Request request = requestService.saveRequest(postId.getPostId(),req);
 		
 		return ResponseEntity.ok(null);
 	}

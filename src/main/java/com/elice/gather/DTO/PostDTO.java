@@ -1,6 +1,7 @@
 package com.elice.gather.DTO;
 
 import com.elice.gather.entity.Board;
+import com.elice.gather.entity.Image;
 import com.elice.gather.entity.Member;
 import com.elice.gather.entity.Post;
 
@@ -26,12 +27,12 @@ public class PostDTO {
 	
 	private int participants;
 	
-	private String imagePath;
+	private long image;
 	
 	private int maxParticipants;
 	
 	
-	public Post toEntity(Board board,Member publisher) {
+	public Post toEntity(Board board,Member publisher,Image image) {
 		return Post.builder()
 				.id(id)
 				.board(board)
@@ -39,7 +40,7 @@ public class PostDTO {
 				.title(title)
 				.content(content)
 				.dayOfWeek(dayOfWeek)
-				.imagePath(imagePath)
+				.image(image)
 				.maxParticipants(maxParticipants)
 				.build();
 	}

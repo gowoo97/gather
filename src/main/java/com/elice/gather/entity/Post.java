@@ -46,7 +46,8 @@ public class Post {
 	@OneToMany(mappedBy = "post",fetch = FetchType.LAZY)
 	private List<Request> participants;
 	
-	private String imagePath;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Image image;
 	
 	private int maxParticipants;
 	

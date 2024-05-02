@@ -16,7 +16,7 @@
 		<div class="main">
 			
 			<div class="imageDiv">
-				<img class="image" th:src="@{http://localhost:8080}+${post.imagePath}" />
+				<img class="image" th:src="@{http://localhost:8080}+'/images/'+${post.image.fileName}" />
 			</div>
 			
 			<p th:text="${post.content}">	

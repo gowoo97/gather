@@ -8,13 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.elice.gather.DTO.BoardDTO;
 import com.elice.gather.DTO.PostDTO;
 import com.elice.gather.entity.Board;
+import com.elice.gather.entity.Image;
 import com.elice.gather.entity.Member;
 import com.elice.gather.entity.Post;
+import com.elice.gather.repository.ImageRepository;
 import com.elice.gather.repository.MemberRepository;
 import com.elice.gather.repository.PostRepository;
 import com.elice.gather.repository.interfaces.BoardRepository;
@@ -32,14 +33,18 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private BoardRepository boardRepository;
 	
+	@Autowired
+	private ImageRepository imageRepository;
+	
 	@Override
 	@Transactional
 	public Post savePost(PostDTO postDTO) {		
 		BoardDTO boardDTO = boardRepository.getBoardById(postDTO.getBoard_id());
 		Board board = boardDTO.toEntity(memberRepository.findById(boardDTO.getPublisher()).get());
 		Member publisher = memberRepository.findByUserId(postDTO.getPublisher());
-	
-		Post post = postDTO.toEntity(board, publisher); 
+		Image image = imageRepository.findById(postDTO.getImage()).get();
+		
+		Post post = postDTO.toEntity(board, publisher,image); 
 		postRepository.save(post);
 
 		return post;

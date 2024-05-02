@@ -19,6 +19,7 @@
 			<div id="imageDiv" style="width: 100%; background-color: antiquewhite; height: 400px; margin-bottom: 70px;">
 				<img src="" id="preview"/>
 				<input type="file" accept="image/*" id="image" name="image" hidden/>
+				<input hidden name="imageId" id = "imageId"/>
 			</div>
 			<textarea name="content"></textarea>
 			<div style="display: flex; justify-content: center;">
@@ -55,7 +56,7 @@
 		var preview = document.getElementById("preview");
 		var reader = new FileReader();
 		var imageDiv = document.getElementById("imageDiv");
-		
+		var imageId = document.getElementById("imageId");
 		
 		
 		function divClick(){
@@ -67,6 +68,21 @@
 		function changeImage(){
 			reader.onloadend=({target})=>{
            preview.src=target.result;
+           	
+           const ajax = new XMLHttpRequest();
+           ajax.open('POST','/api/image',true);
+           //ajax.setRequestHeader("Content-Type", "multipart/form-data");
+           
+           let formData = new FormData();
+           formData.append("image",image.files[0]); 
+           
+			ajax.onload= function(){
+				if(this.status == 200){
+					imageId.value =  (JSON.parse(this.responseText)).id
+				}
+			}
+           
+           ajax.send(formData);
         }
 			reader.readAsDataURL(image.files[0]);
 		};

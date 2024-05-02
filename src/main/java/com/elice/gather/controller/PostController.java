@@ -42,10 +42,10 @@ public class PostController {
 	
 	@PostMapping
 	@Transactional
-	public String createPost(@RequestParam Map<String, Object> paramMap,@RequestParam("image") MultipartFile image,
+	public String createPost(@RequestParam Map<String, Object> paramMap,
 			@RequestParam("week") List<String> week,HttpServletRequest request) throws IllegalStateException, IOException, InterruptedException {
 		HttpSession session = request.getSession();
-		PostDTO postDTO = createPostDTO(paramMap,image,week,(String) session.getAttribute("userId"));
+		PostDTO postDTO = createPostDTO(paramMap,week,(String) session.getAttribute("userId"));
 		postService.savePost(postDTO);
 		Thread.sleep(1000);
 		return "redirect:/board/view?id="+(String)paramMap.get("id");
@@ -84,16 +84,16 @@ public class PostController {
 		return "redirect:/post/view?id="+(String)paramMap.get("id");
 	}
 	
-	private PostDTO createPostDTO(Map<String, Object> paramMap,MultipartFile image
-			,List<String> week,String userId) throws IllegalStateException, IOException, InterruptedException {
-		UUID uuid=UUID.randomUUID();
-		image.transferTo(Paths.get("src/main/resources/static/images/"+uuid.toString()+"_"+image.getOriginalFilename()));
+	private PostDTO createPostDTO(Map<String, Object> paramMap,List<String> week,String userId) throws IllegalStateException, IOException, InterruptedException {
+		//UUID uuid=UUID.randomUUID();
+		//image.transferTo(Paths.get("src/main/resources/static/images/"+uuid.toString()+"_"+image.getOriginalFilename()));
 		//////////////////////////////////////////이미지 저장
 		
-		String fileName =  uuid.toString()+"_"+image.getOriginalFilename();
+		//String fileName =  uuid.toString()+"_"+image.getOriginalFilename();
 		String title = (String)paramMap.get("title");
 		String content = (String)paramMap.get("content");
 		StringBuffer joinWeek = new StringBuffer("0000000");
+		long imageId  = Long.parseLong((String)paramMap.get("imageId"));
 		int participants  = Integer.parseInt((String) paramMap.get("participants"));
 		long board_id = Long.parseLong((String)paramMap.get("id"));
 		String publisher = userId;
@@ -109,7 +109,7 @@ public class PostController {
 				.dayOfWeek(joinWeek.toString())
 				.maxParticipants(participants)
 				.participants(0)
-				.imagePath("/images/"+fileName)
+				.image(imageId)
 				.build();
 
 	}

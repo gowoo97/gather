@@ -30,7 +30,7 @@
 				<a th:href="@{/post/view(id=${post.id})}">
 				<div class="post">
 				<div class="image">
-					<img th:src="@{http://localhost:8080}+${post.imagePath}"/>
+					<img th:src="@{http://localhost:8080}+'/images/'+${post.image.fileName}"/>
 				</div>
 				
 				<div class="post_content">
