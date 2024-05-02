@@ -33,12 +33,12 @@
 			</div>
 			<div>
 				<span>모집인원</span>
-				<progress value="3" max="6"></progress>
+				<progress id="progress" th:value="${#lists.size(post.participants)}" th:max="${post.maxParticipants}"></progress>
 				
 			</div>
 			
 			
-			<button style="width: 100%;">
+			<button th:if="${post.publisher.userId} != ${session.userId}" th:onclick="sendRequest([[${post.id}]]);"  style="width: 100%;">
 				신청하기
 			</button>
 		
@@ -104,6 +104,7 @@
 		/*<![CDATA[*/
 		const commentIdInput  = document.getElementById('commentIdInput');
 		const modal = document.getElementById('modal');
+		const progress = document.getElementById('progress');
 		let weekend = document.getElementsByClassName('weekNonSelected');
 		let joinWeek = `[[${post.dayOfWeek}]]`;
 		joinWeek=joinWeek.substring(1,joinWeek.length-1);
@@ -158,6 +159,26 @@
 				modal.style.visibility="visible";
 				commentIdInput.value=commentId;
 			}
+			
+			
+			
+			function sendRequest(postId){
+				const ajax = new XMLHttpRequest();
+				ajax.open('POST','/api/request',true);
+				ajax.setRequestHeader("Content-Type","application/json");
+				ajax.onload = ()=>{
+					if(ajax.status == 200){
+						let num = parseInt(progress.value);
+						num++;
+						progress.value=num;
+					}else{
+						alert('오류!');
+					}
+				};
+				ajax.send('{"postId":'+postId+'}');
+			}
+			
+			
 		
 		/*]]>*/
 	</script>

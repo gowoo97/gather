@@ -65,4 +65,8 @@
 	
 }
 
+#progress{
+	transition:all 5s ease;
+}
+
 

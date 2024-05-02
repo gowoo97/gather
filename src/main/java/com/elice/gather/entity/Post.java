@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,7 +43,8 @@ public class Post {
 	
 	private String dayOfWeek;
 	
-	private int participants;
+	@OneToMany(mappedBy = "post",fetch = FetchType.LAZY)
+	private List<Request> participants;
 	
 	private String imagePath;
 	

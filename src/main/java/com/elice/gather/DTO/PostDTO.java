@@ -39,7 +39,6 @@ public class PostDTO {
 				.title(title)
 				.content(content)
 				.dayOfWeek(dayOfWeek)
-				.participants(participants)
 				.imagePath(imagePath)
 				.maxParticipants(maxParticipants)
 				.build();
