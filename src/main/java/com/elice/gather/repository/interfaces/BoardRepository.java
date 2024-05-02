@@ -16,6 +16,6 @@ public interface BoardRepository {
 	
 	int modifyBoard(BoardDTO board);
 	
-	void deleteBoard(long id);
+	int deleteBoard(long id);
 	
 }

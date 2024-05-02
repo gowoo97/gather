@@ -1,5 +1,8 @@
 package com.elice.gather.service.interfaces;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 
 import com.elice.gather.DTO.PostDTO;
@@ -14,4 +17,8 @@ public interface PostService {
 	
 	
 	Post findPostById(long postId);
+	
+	int deletePost(long postId,String userId);
+	
+	Post modifyPost(Map<String, Object> paramMap,List<String> week);
 }

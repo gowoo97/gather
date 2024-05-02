@@ -67,9 +67,33 @@ public class BoardController {
 		model.addAttribute("board", board);
 		model.addAttribute("posts", posts.toList());
 		
-		
-		
 		return "board_detail";
+		
+	}
+	
+	
+	@PostMapping("/modify.do")
+	public String modify(@RequestParam("boardName") String boardName,
+			@RequestParam("boardId") long id,HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		boardService.modifyBoard(id, boardName, (String)session.getAttribute("userId"));
+		
+		return "redirect:/board";
+	}
+	
+	@PostMapping("/delete.do")
+	public String delete(@RequestParam("boardId") long boardId,HttpServletRequest req,Model model) {
+		HttpSession session = req.getSession();
+		
+		int rst = boardService.deleteBoard(boardId, (String)session.getAttribute("userId"));
+		
+		if(rst == -1) {
+			model.addAttribute("message", "권한이 없습니다.");
+			model.addAttribute("url", "/board");
+			return "alert";
+		}
+		
+		return "redirect:/board";
 		
 	}
 	

@@ -43,16 +43,35 @@
 			</button>
 		
 		</div>
+		<div th:if="${post.publisher.userId} == ${session.userId}">
+			<form method="get" action="/post/modify">
+				<input type="hidden" name="postId" th:value="${post.id}" />
+				<input type="submit" value="수정" />
+			</form>
+			<input type="button" value="삭제" th:onclick="clickDelete([[${post.id}]])" />
+		</div>
 		<h5>댓글</h5>
 		<hr/>
 		
 		<div th:each="comment : ${comments}" style="border: 1px solid black; border-radius: 10px;">
-			<div th:text="${comment.publisher.userId}">
+			
+			<div style="position: relative;">
+				<div th:text="${comment.publisher.userId}">
+				</div>
+				<div th:text="${comment.content}">
+				</div>
+				
+				<div th:if="${comment.publisher.userId} == ${session.userId}" style="position: absolute; right: 0; top: 0;">
+
+					<div th:onClick="modifyComment([[${comment.id}]]);">수정</div>
+					<div th:onclick="deleteComment([[${comment.id}]],[[${post.id}]]);">삭제</div>
+				</div>
 				
 			</div>
-			<div th:text="${comment.content}">
+			
+			
 				
-			</div>
+				
 		</div>
 		
 		<div>
@@ -69,8 +88,22 @@
             	
         </footer>
     </div>
+    <div  id="modal">
+		<div>
+		<form  th:method="post" th:action="@{/comment/modify.do}" >
+			<input type="text" name="commentContent" placeholder="변경할 제목을 입력하세요." />
+			<input type="hidden" name="commentId" id="commentIdInput"/>
+			<input type="hidden" name="postId" th:value="${post.id}"/>
+			<input type="submit" id="modify"  value="수정"/>
+			<input type="button" id="cancel"  value="취소"/>
+		</form>
+		</div>
+		
+	</div>
     <script th:inline="javascript">
 		/*<![CDATA[*/
+		const commentIdInput  = document.getElementById('commentIdInput');
+		const modal = document.getElementById('modal');
 		let weekend = document.getElementsByClassName('weekNonSelected');
 		let joinWeek = `[[${post.dayOfWeek}]]`;
 		joinWeek=joinWeek.substring(1,joinWeek.length-1);
@@ -83,7 +116,48 @@
 			}	
 		}
 		
-		
+		function clickDelete(postId){
+				const form = document.createElement('form');
+				form.setAttribute('method','post');
+				form.setAttribute('action','/post/delete.do');
+				
+				const data1 = document.createElement('input');
+				data1.setAttribute('type','hidden');
+				data1.setAttribute('name','postId');
+				data1.setAttribute('value',postId);
+				
+				form.appendChild(data1);
+				
+				document.body.appendChild(form);
+				form.submit();
+			}
+			
+			function deleteComment(commentId,postId){
+				const form = document.createElement('form');
+				form.setAttribute('method','post');
+				form.setAttribute('action','/comment/delete.do');
+				
+				const data1 = document.createElement('input');
+				data1.setAttribute('type','hidden');
+				data1.setAttribute('name','commentId');
+				data1.setAttribute('value',commentId);
+				
+				const data2 = document.createElement('input');
+				data2.setAttribute('type','hidden');
+				data2.setAttribute('name','postId');
+				data2.setAttribute('value',postId);
+				
+				form.appendChild(data1);
+				form.appendChild(data2);
+				
+				document.body.appendChild(form);
+				form.submit();
+			};
+			
+			function modifyComment(commentId){
+				modal.style.visibility="visible";
+				commentIdInput.value=commentId;
+			}
 		
 		/*]]>*/
 	</script>

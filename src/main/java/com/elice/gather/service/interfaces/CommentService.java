@@ -10,4 +10,8 @@ public interface CommentService {
 		Comment save(CommentDTO commentDTO);
 		
 		List<Comment> findAll(int page, int size);
+		
+		void deleteComment(long id);
+		
+		Comment modifyComment(long id , String content);
 }

@@ -7,6 +7,8 @@ import com.elice.gather.entity.Member;
 import com.elice.gather.repository.MemberRepository;
 import com.elice.gather.service.interfaces.LoginService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class LoginServiceImpl implements LoginService{
 
@@ -14,19 +16,19 @@ public class LoginServiceImpl implements LoginService{
 	private MemberRepository memberRepository;
 
 	@Override
-	public boolean login(String userId, String password) {
+	public Member login(String userId, String password) {
 		
 		Member existMember = memberRepository.findByUserId(userId);
 		
 		if(existMember == null) {
-			return false;
+			return null;
 		}
 		
 		if(existMember.getUserId().equals(userId) && existMember.getPassword().equals(password)) {
-			return true;
+			return existMember;
 		}
 		
-		return false;
+		return null;
 	}
 	
 	

@@ -43,6 +43,25 @@ public class CommentController {
 		
 	}
 	
+	@PostMapping("/delete.do")
+	public String deleteComment(@RequestParam("commentId") String commentId,@RequestParam("postId") String postId) {
+		System.out.println(commentId);
+		commentService.deleteComment(Long.parseLong(commentId));
+		
+		return "redirect:/post/view?id="+postId;
+		
+	}
+	
+	
+	@PostMapping("/modify.do")
+	public String modifyComment(@RequestParam("commentId") long commentId,@RequestParam("commentContent") String content,@RequestParam("postId") String postId) {
+		commentService.modifyComment(commentId, content);
+		
+		
+		return "redirect:/post/view?id="+postId;
+		
+	}
+	
 	
 	
 }

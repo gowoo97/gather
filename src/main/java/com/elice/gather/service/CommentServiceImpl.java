@@ -46,6 +46,19 @@ public class CommentServiceImpl implements CommentService{
 	public List<Comment> findAll(int page,int size) {
 		return commentRepository.findAll(PageRequest.of(page, size)).toList();
 	}
+	
+	
+	@Transactional
+	public void deleteComment(long id) {
+		commentRepository.deleteById(id);
+	}
+	
+	@Transactional
+	public Comment modifyComment(long id ,String content) {
+		Comment comment = commentRepository.findById(id).get();
+		comment.setContent(content);
+		return comment;
+	}
 
 	
 	

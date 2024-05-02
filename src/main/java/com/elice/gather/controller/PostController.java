@@ -47,6 +47,7 @@ public class PostController {
 		HttpSession session = request.getSession();
 		PostDTO postDTO = createPostDTO(paramMap,image,week,(String) session.getAttribute("userId"));
 		postService.savePost(postDTO);
+		Thread.sleep(1000);
 		return "redirect:/board/view?id="+(String)paramMap.get("id");
 	}
 	
@@ -60,12 +61,35 @@ public class PostController {
 		return "post_detail";
 	}
 	
+	@GetMapping("/modify")
+	public String modifyPage(@RequestParam("postId") long id,Model model) {
+		
+		Post post = postService.findPostById(id);
+		PostDTO postDTO = PostDTO.builder()
+				.id(post.getId())
+				.title(post.getTitle())
+				.content(post.getContent())
+				.dayOfWeek(post.getDayOfWeek())
+				.build();
+		model.addAttribute("post", postDTO);
+		
+		return "modify_post";
+	}
+	
+	@PostMapping("/modify.do")
+	public String modifyPost(@RequestParam Map<String, Object> paramMap,@RequestParam("week") List<String> week) {
+		
+		postService.modifyPost(paramMap, week);
+		
+		return "redirect:/post/view?id="+(String)paramMap.get("id");
+	}
 	
 	private PostDTO createPostDTO(Map<String, Object> paramMap,MultipartFile image
 			,List<String> week,String userId) throws IllegalStateException, IOException, InterruptedException {
 		UUID uuid=UUID.randomUUID();
 		image.transferTo(Paths.get("src/main/resources/static/images/"+uuid.toString()+"_"+image.getOriginalFilename()));
 		//////////////////////////////////////////이미지 저장
+		
 		String fileName =  uuid.toString()+"_"+image.getOriginalFilename();
 		String title = (String)paramMap.get("title");
 		String content = (String)paramMap.get("content");
@@ -89,5 +113,19 @@ public class PostController {
 				.build();
 
 	}
+	
+	@PostMapping("/delete.do")
+	public String deletePost(@RequestParam("postId") long id,HttpServletRequest req,Model model) {
+		HttpSession session = req.getSession();
+		int rst = postService.deletePost(id, (String)session.getAttribute("userId"));
+		if(rst ==-1) {
+			model.addAttribute("message","권한이 없습니다.");
+			model.addAttribute("url","/board");
+			return "alert";
+		}
+		
+		return "redirect:/board";
+	}
+	
 	
 }
