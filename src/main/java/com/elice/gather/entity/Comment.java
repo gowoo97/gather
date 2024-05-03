@@ -25,7 +25,6 @@ public class Comment {
 	private long id;
 	
 	@ManyToOne
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Post post;
 	
 	@ManyToOne

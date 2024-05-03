@@ -31,7 +31,6 @@ public class Post {
 	private long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Board board;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -43,16 +42,21 @@ public class Post {
 	
 	private String dayOfWeek;
 	
-	@OneToMany(mappedBy = "post",fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private List<Request> participants;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "post")
+	private List<Comment> comments;
+	
+	
+	
+	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private Image image;
 	
 	private int maxParticipants;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Comment> comments;
+	
+	
 
 	
 }

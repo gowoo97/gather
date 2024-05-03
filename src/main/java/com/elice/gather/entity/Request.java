@@ -1,6 +1,8 @@
 package com.elice.gather.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,14 +18,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"post","member"})})
+@Table
 public class Request {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE ,fetch = FetchType.LAZY)
 	@JoinColumn(name = "post")
 	private Post post;
 	

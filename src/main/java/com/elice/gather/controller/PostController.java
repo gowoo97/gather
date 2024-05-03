@@ -47,7 +47,6 @@ public class PostController {
 		HttpSession session = request.getSession();
 		PostDTO postDTO = createPostDTO(paramMap,week,(String) session.getAttribute("userId"));
 		postService.savePost(postDTO);
-		Thread.sleep(1000);
 		return "redirect:/board/view?id="+(String)paramMap.get("id");
 	}
 	
@@ -56,7 +55,7 @@ public class PostController {
 		Post post = postService.findPostById(postId);
 		List<Comment> comments = commentService.findAll(0, 10);
 		model.addAttribute("post", post);
-		model.addAttribute("comments", comments);
+		model.addAttribute("comments", post.getComments());
 		
 		return "post_detail";
 	}

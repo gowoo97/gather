@@ -38,7 +38,7 @@
 			<div>
 				<div style="display: flex; justify-content: center;">
 					<label>모집인원<input type="number" name="participants"/> </label>
-					<input type="submit" value="제출"/>
+					<input type="submit" id="submitBtn" value="제출"/>
 				</div>
 			</div>
         </div>
@@ -57,7 +57,7 @@
 		var reader = new FileReader();
 		var imageDiv = document.getElementById("imageDiv");
 		var imageId = document.getElementById("imageId");
-		
+		var sumbmitBtn = document.getElementById("submitBtn");
 		
 		function divClick(){
 			image.click();
@@ -66,6 +66,7 @@
 		
         
 		function changeImage(){
+			submitBtn.disabled= true;
 			reader.onloadend=({target})=>{
            preview.src=target.result;
            	
@@ -83,6 +84,10 @@
 			}
            
            ajax.send(formData);
+           
+           setTimeout(()=>{
+			   submitBtn.disabled= false;
+		   },7000);
         }
 			reader.readAsDataURL(image.files[0]);
 		};
