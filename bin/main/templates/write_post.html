@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/header.css}">
@@ -19,6 +19,7 @@
 			<div id="imageDiv" style="width: 100%; background-color: antiquewhite; height: 400px; margin-bottom: 70px;">
 				<img src="" id="preview"/>
 				<input type="file" accept="image/*" id="image" name="image" hidden/>
+				<input hidden name="imageId" id = "imageId"/>
 			</div>
 			<textarea name="content"></textarea>
 			<div style="display: flex; justify-content: center;">
@@ -37,10 +38,11 @@
 			<div>
 				<div style="display: flex; justify-content: center;">
 					<label>모집인원<input type="number" name="participants"/> </label>
-					<input type="submit" value="제출"/>
+					<input type="submit" id="submitBtn" value="제출"/>
 				</div>
 			</div>
         </div>
+        	<input name="id" id="board_id" th:value="${param.id}" hidden/>
         </form>
 
         <footer th:replace="~{footer :: footer}">
@@ -54,6 +56,9 @@
 		var preview = document.getElementById("preview");
 		var reader = new FileReader();
 		var imageDiv = document.getElementById("imageDiv");
+		var imageId = document.getElementById("imageId");
+		var sumbmitBtn = document.getElementById("submitBtn");
+		
 		function divClick(){
 			image.click();
 		}
@@ -61,8 +66,28 @@
 		
         
 		function changeImage(){
+			submitBtn.disabled= true;
 			reader.onloadend=({target})=>{
            preview.src=target.result;
+           	
+           const ajax = new XMLHttpRequest();
+           ajax.open('POST','/api/image',true);
+           //ajax.setRequestHeader("Content-Type", "multipart/form-data");
+           
+           let formData = new FormData();
+           formData.append("image",image.files[0]); 
+           
+			ajax.onload= function(){
+				if(this.status == 200){
+					imageId.value =  (JSON.parse(this.responseText)).id
+				}
+			}
+           
+           ajax.send(formData);
+           
+           setTimeout(()=>{
+			   submitBtn.disabled= false;
+		   },7000);
         }
 			reader.readAsDataURL(image.files[0]);
 		};
@@ -70,6 +95,8 @@
 		imageDiv.addEventListener("click",divClick);
 
 		image.addEventListener("change",changeImage);
+		
+		
 		
 		/*]]>*/
 	</script>

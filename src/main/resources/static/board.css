@@ -9,3 +9,21 @@
 	height: 100%;
 	background-color: antiquewhite;
 }
+
+
+#modal{
+	width: 500px;
+	height: 300px;
+	border: 1px solid black;
+	transform: translate(-50%,-50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+	background-color: cornflowerblue;	
+	
+}

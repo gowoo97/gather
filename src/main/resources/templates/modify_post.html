@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/header.css}">
+    <link rel="stylesheet" th:href="@{/footer.css}">
+    <link rel="stylesheet" th:href="@{/common.css}">
+    <link rel="stylesheet" th:href="@{/write_post.css}">
+    <title>Title</title>
+</head>
+<body>
+    	<div class="wrap">
+        <div th:replace="~{header :: header}">
+        </div>
+		<form method="post" enctype="multipart/form-data" action="/post/modify.do">
+        <div class="main">
+			
+			<div style="margin-bottom: 30px;"><input type="text" th:value="${post.title}" name="title" style="width: 100%;" placeholder="제목을 입력하세요"/></div>
+			
+			<textarea name="content" th:text="${post.content}"></textarea>
+			<div style="display: flex; justify-content: center;">
+				
+				
+					<label><input type="checkbox" name="week" value="0"/>월</label>
+					<label><input type="checkbox" name="week" value="1"/>화</label>
+					<label><input type="checkbox" name="week" value="2"/>수</label>
+					<label><input type="checkbox" name="week" value="3"/>목</label>
+					<label><input type="checkbox" name="week" value="4"/>금</label>
+					<label><input type="checkbox" name="week" value="5"/>토</label>
+					<label><input type="checkbox" name="week" value="6"/>일</label>
+			
+				
+			</div>
+			<div>
+				<div style="display: flex; justify-content: center;">
+					<input type="hidden" name="id" th:value="${post.id}">
+					<input type="submit" value="제출"/>
+				</div>
+			</div>
+        </div>
+        	
+        </form>
+
+        <footer th:replace="~{footer :: footer}">
+            	
+        </footer>
+    </div>
+</body>
+<script th:inline="javascript">
+		/*<![CDATA[*/
+		
+		
+		
+		
+		/*]]>*/
+	</script>
+</html>
