@@ -13,7 +13,7 @@ public interface BoardService {
 	
 	BoardDTO getBoardById(long id);
 	
-	int modifyBoard(BoardDTO board);
+	int modifyBoard(long boardId,String boardName,String userId);
 	
-	void deleteBoard(long id);
+	int deleteBoard(long id,String userId);
 }

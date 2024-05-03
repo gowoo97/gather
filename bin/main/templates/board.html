@@ -24,16 +24,20 @@
 					</form>
 				</div>   
 				<div class="boards" style="height: 1000px;">
-					<div th:each="board : ${boards}" style="border: 1px solid black; border-radius: 10px; height: 100px; margin-top:13px;">
-						<a th:href="@{/board/view(id = ${board.id})}">
+					<div th:each="board : ${boards}" style="border: 1px solid black; border-radius: 10px; height: 100px; margin-top:13px; position: relative;">
+						<a th:href="@{/board/view(id = ${board.id} )}">
 						<div class="board">
-						<div th:text="${board.boardName}"> </div>
+							<div th:text="${board.boardName}"> </div>
 						</div>
 						</a>
+						<div style="position: absolute; right: 0; top: 0;display: flex;">
+							<div th:onclick="clickModify([[${board.id}]]);">수정</div>
+							<div th:onclick="clickDelete([[${board.id}]]);">삭제</div>
+						</div>
 					</div>
 				</div>
 				<div style="display: flex; justify-content: center;">
-					<form method="post" action="/board">
+					<form th:method="post" th:action="@{/board}">
 					<input type="text" placeholder="게시판 이름" name="boardName" style="width: 663px; height: 60px;"/>
 					<input type="submit" value="생성" style="width: 143px; height: 60px;"/>
 					</form>
@@ -45,5 +49,53 @@
         
 
     </div>
+    <div  id="modal">
+		<div>
+		<form  th:method="post" th:action="@{/board/modify.do}" >
+			<input type="text" name="boardName" placeholder="변경할 제목을 입력하세요." />
+			<input type="hidden" name="boardId" id="boardIdInput"/>
+			<input type="submit" id="modify"  value="수정"/>
+			<input type="button" id="cancel"  value="취소"/>
+		</form>
+		</div>
+		
+	</div>
+     <script th:inline="javascript">
+		/*<![CDATA[*/
+			const modifyBtn = document.getElementById('modify');
+			const cancelBtn = document.getElementById('cancel');
+			const boardIdInput = document.getElementById('boardIdInput');
+			const modal= document.getElementById('modal');
+			
+			
+			function clickModify(boardId){
+				modal.style.visibility="visible";
+				boardIdInput.value=boardId;
+			}
+			
+			function clickDelete(boardId){
+				const form = document.createElement('form');
+				form.setAttribute('method','post');
+				form.setAttribute('action','/board/delete.do');
+				
+				const data1 = document.createElement('input');
+				data1.setAttribute('type','hidden');
+				data1.setAttribute('name','boardId');
+				data1.setAttribute('value',boardId);
+				
+				form.appendChild(data1);
+				
+				document.body.appendChild(form);
+				form.submit();
+			}
+			
+			cancelBtn.addEventListener('click',function(){
+				modal.style.visibility="hidden";
+			});
+			
+			
+		
+		/*]]>*/
+	</script>
 </body>
 </html>
