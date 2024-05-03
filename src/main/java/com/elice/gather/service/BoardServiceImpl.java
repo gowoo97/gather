@@ -43,14 +43,32 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	@Transactional
-	public int modifyBoard(BoardDTO board) {
-		return boardRepository.modifyBoard(board);
+	public int modifyBoard(long boardId,String boardName,String userId) {
+		BoardDTO beforeBoard = boardRepository.getBoardById(boardId);
+		Member publisher = memberRepository.findById(beforeBoard.getPublisher()).get();
+		
+		if(!userId.equals(publisher.getUserId())) {
+			return -1;
+		}
+		
+		
+		beforeBoard.setBoardName(boardName);
+		
+		
+		return boardRepository.modifyBoard(beforeBoard);
 	}
 
 	@Override
 	@Transactional
-	public void deleteBoard(long id) {
-		boardRepository.deleteBoard(id);
+	public int deleteBoard(long id,String userId) {
+		BoardDTO boardDTO= boardRepository.getBoardById(id);
+		Member member = memberRepository.findByUserId(userId);
+		
+		if(boardDTO.getPublisher() != member.getId()) {
+			return -1;
+		}
+		
+		return  boardRepository.deleteBoard(id);
 	}
 	
 	

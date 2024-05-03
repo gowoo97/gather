@@ -59,9 +59,9 @@ public class BoardRepositoryImpl implements BoardRepository{
 	}
 
 	@Override
-	public void deleteBoard(long id) {
+	public int deleteBoard(long id) {
 		String sql = "delete from board where id = "+id;
-		jdbcTemplate.update(sql);
+		return jdbcTemplate.update(sql);
 	}
 	
 	
