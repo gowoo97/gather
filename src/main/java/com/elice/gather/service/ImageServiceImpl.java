@@ -18,10 +18,12 @@ public class ImageServiceImpl {
 	private ImageRepository imageRepository;
 	
 	
+	private final String path = "src/main/resources/static/images/";
+	
 	public Image saveImage(MultipartFile image) throws IllegalStateException, IOException {
 		UUID uuid = UUID.randomUUID();
 		String fileName = uuid.toString()+"_"+image.getOriginalFilename();
-		image.transferTo(Paths.get("src/main/resources/static/images/"+uuid.toString()+"_"+image.getOriginalFilename()));
+		image.transferTo(Paths.get(path+uuid.toString()+"_"+image.getOriginalFilename()));
 		Image imageEntity = new Image();
 		imageEntity.setFileName(fileName);
 		

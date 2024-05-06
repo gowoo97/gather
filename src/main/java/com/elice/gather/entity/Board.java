@@ -32,7 +32,7 @@ public class Board {
 	@Column
 	private String boardName;
 	
-	@OneToMany(mappedBy = "board" , cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "board" , cascade = CascadeType.ALL )
 	private List<Post> posts;
 	
 }

@@ -16,9 +16,9 @@ import com.elice.gather.entity.Image;
 import com.elice.gather.entity.Member;
 import com.elice.gather.entity.Post;
 import com.elice.gather.repository.ImageRepository;
+import com.elice.gather.repository.JpaBoardRepository;
 import com.elice.gather.repository.MemberRepository;
 import com.elice.gather.repository.PostRepository;
-import com.elice.gather.repository.interfaces.BoardRepository;
 import com.elice.gather.service.interfaces.PostService;
 
 @Service
@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
 	private PostRepository postRepository;
 	
 	@Autowired
-	private BoardRepository boardRepository;
+	private JpaBoardRepository boardRepository;
 	
 	@Autowired
 	private ImageRepository imageRepository;
@@ -39,8 +39,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	@Transactional
 	public Post savePost(PostDTO postDTO) {		
-		BoardDTO boardDTO = boardRepository.getBoardById(postDTO.getBoard_id());
-		Board board = boardDTO.toEntity(memberRepository.findById(boardDTO.getPublisher()).get());
+		Board board = boardRepository.findById(postDTO.getBoard_id()).get();
 		Member publisher = memberRepository.findByUserId(postDTO.getPublisher());
 		Image image = imageRepository.findById(postDTO.getImage()).get();
 		
