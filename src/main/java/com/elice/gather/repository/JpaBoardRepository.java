@@ -6,4 +6,7 @@ import com.elice.gather.entity.Board;
 
 public interface JpaBoardRepository extends JpaRepository<Board, Long> {
 
+	
+	Board findByBoardName(String boardName);
+	
 }

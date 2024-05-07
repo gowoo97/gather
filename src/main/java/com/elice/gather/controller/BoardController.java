@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.elice.gather.DTO.BoardDTO;
+import com.elice.gather.entity.Board;
 import com.elice.gather.entity.Post;
-import com.elice.gather.service.interfaces.BoardService;
+import com.elice.gather.service.JpaBoardServiceImpl;
 import com.elice.gather.service.interfaces.PostService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ import jakarta.servlet.http.HttpSession;
 public class BoardController {
 
 	@Autowired
-	private BoardService boardService;
+	private JpaBoardServiceImpl boardService;
 	
 	@Autowired
 	private PostService postService;
@@ -33,7 +34,7 @@ public class BoardController {
 	@GetMapping
 	public String boardPage(Model model) {
 		
-		List<BoardDTO> list = boardService.getBoards(10);
+		List<Board> list = boardService.getBoards(10);
 		
 		model.addAttribute("boards", list);
 		
@@ -63,7 +64,7 @@ public class BoardController {
 	public String boardDetail(@RequestParam("id") Long id , Model model,@RequestParam(name = "page",defaultValue = "0") Integer page) {
 		
 		Page<Post> posts = postService.findAll(page,10);
-		BoardDTO board= boardService.getBoardById(id);
+		Board board= boardService.getBoardById(id);
 		model.addAttribute("board", board);
 		model.addAttribute("posts", posts.toList());
 		
