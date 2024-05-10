@@ -32,6 +32,11 @@ public class JpaBoardServiceImpl {
 	public List<Board> getBoards(int cnt) {
 		return boardRepository.findAll(PageRequest.of(0,10)).toList();
 	}
+	
+	@Transactional(readOnly = true)
+	public List<Board> getBoardsByKeyword(String keyword , int page){
+		return boardRepository.findByBoardNameContaining(keyword , PageRequest.of(page, 10)).toList();
+	}
 
 
 	@Transactional(readOnly = true)

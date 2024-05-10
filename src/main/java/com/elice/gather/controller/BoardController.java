@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +33,10 @@ public class BoardController {
 	private PostService postService;
 	
 	@GetMapping
-	public String boardPage(Model model) {
+	public String boardPage(Model model,@RequestParam(name = "page" , defaultValue = "0") int page 
+			, @RequestParam(name = "keyword" , required = false , defaultValue = "") String keyword) {
 		
-		List<Board> list = boardService.getBoards(10);
+		List<Board> list = boardService.getBoardsByKeyword(keyword, page);
 		
 		model.addAttribute("boards", list);
 		
@@ -61,12 +63,14 @@ public class BoardController {
 	}
 	
 	@GetMapping("/view")
-	public String boardDetail(@RequestParam("id") Long id , Model model,@RequestParam(name = "page",defaultValue = "0") Integer page) {
+	public String boardDetail(@RequestParam("id") Long id , Model model,
+			@RequestParam(name = "page",defaultValue = "0") Integer page ,
+			@RequestParam(name = "keyword", defaultValue = "") String keyword) {
 		
-		Page<Post> posts = postService.findAll(page,10);
+		List<Post> posts = postService.getPostsByKeyword(keyword,PageRequest.of(page,10));
 		Board board= boardService.getBoardById(id);
 		model.addAttribute("board", board);
-		model.addAttribute("posts", posts.toList());
+		model.addAttribute("posts", posts);
 		
 		return "board_detail";
 		

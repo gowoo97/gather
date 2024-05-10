@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,6 +89,14 @@ public class PostServiceImpl implements PostService {
 		post.setDayOfWeek(joinWeek.toString());
 		
 		return post;
+	}
+
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Post> getPostsByKeyword(String keyword, Pageable pageable) {
+		
+		return postRepository.findByTitleContaining(keyword, pageable).toList();
 	}
 
 }
