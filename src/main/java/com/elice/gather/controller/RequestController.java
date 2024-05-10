@@ -20,9 +20,15 @@ public class RequestController {
 	
 	@PostMapping("/api/request")
 	public ResponseEntity<?> createRequest(@RequestBody RequestDTO postId,HttpServletRequest req) {
-		Request request = requestService.saveRequest(postId.getPostId(),req);
+		try {
+			Request request = requestService.saveRequest(postId.getPostId(),req);
+			
+			return ResponseEntity.ok(null);
+		}catch(Exception e) {
+			//e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
 		
-		return ResponseEntity.ok(null);
 	}
 	
 	

@@ -30,7 +30,7 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY )
 	private Board board;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

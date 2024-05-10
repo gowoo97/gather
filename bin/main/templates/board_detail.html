@@ -14,8 +14,9 @@
         </div>
         
         <div style="display: flex; justify-content: center;">
-					<form>
-					<input type="text" placeholder="검색어를 입력하세요" style="width: 559px; height: 60px;"/>
+					<form method="get" th:action="@{/board/view}">
+					<input  type="hidden" name="id" th:value="${board.id}"/>
+					<input type="text" name="keyword" placeholder="검색어를 입력하세요" style="width: 559px; height: 60px;"/>
 					<input type="submit" value="검색" style="width: 82px; height: 60px;"/>
 					</form>
 		</div>   

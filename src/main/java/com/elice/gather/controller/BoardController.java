@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.elice.gather.DTO.BoardDTO;
+import com.elice.gather.entity.Board;
 import com.elice.gather.entity.Post;
-import com.elice.gather.service.interfaces.BoardService;
+import com.elice.gather.service.JpaBoardServiceImpl;
 import com.elice.gather.service.interfaces.PostService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,15 +27,16 @@ import jakarta.servlet.http.HttpSession;
 public class BoardController {
 
 	@Autowired
-	private BoardService boardService;
+	private JpaBoardServiceImpl boardService;
 	
 	@Autowired
 	private PostService postService;
 	
 	@GetMapping
-	public String boardPage(Model model) {
+	public String boardPage(Model model,@RequestParam(name = "page" , defaultValue = "0") int page 
+			, @RequestParam(name = "keyword" , required = false , defaultValue = "") String keyword) {
 		
-		List<BoardDTO> list = boardService.getBoards(10);
+		List<Board> list = boardService.getBoardsByKeyword(keyword, page);
 		
 		model.addAttribute("boards", list);
 		
@@ -60,12 +63,14 @@ public class BoardController {
 	}
 	
 	@GetMapping("/view")
-	public String boardDetail(@RequestParam("id") Long id , Model model,@RequestParam(name = "page",defaultValue = "0") Integer page) {
+	public String boardDetail(@RequestParam("id") Long id , Model model,
+			@RequestParam(name = "page",defaultValue = "0") Integer page ,
+			@RequestParam(name = "keyword", defaultValue = "") String keyword) {
 		
-		Page<Post> posts = postService.findAll(page,10);
-		BoardDTO board= boardService.getBoardById(id);
+		List<Post> posts = postService.getPostsByKeyword(keyword,PageRequest.of(page,10));
+		Board board= boardService.getBoardById(id);
 		model.addAttribute("board", board);
-		model.addAttribute("posts", posts.toList());
+		model.addAttribute("posts", posts);
 		
 		return "board_detail";
 		
