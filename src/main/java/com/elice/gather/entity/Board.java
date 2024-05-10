@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class Board {
 	@Column
 	private String boardName;
 	
-	@OneToMany(mappedBy = "board" , cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "board" , fetch = FetchType.LAZY ,cascade = CascadeType.ALL ,orphanRemoval = true)
 	private List<Post> posts;
 	
 }
